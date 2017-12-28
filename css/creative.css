@@ -534,22 +534,22 @@ header.masthead p {
 
 @media (-moz-touch-enabled: 1), (pointer: coarse) {
 	/* Rules for touch screens */
-	.portfolio-box-caption {
+	a.portfolio-box div.portfolio-box-caption {
 		opacity: 1;
 	}
 
-	.portfolio-box .portfolio-box-caption {
+	a.portfolio-box div.portfolio-box-caption {
 		height: 25%;
 	}
 }
 
 @media (any-hover: none) {
 	/* Rules for touch screens */
-	.portfolio-box-caption {
+	a.portfolio-box div.portfolio-box-caption {
 		opacity: 1;
 	}
 
-	.portfolio-box .portfolio-box-caption {
+	a.portfolio-box div.portfolio-box-caption {
 		height: 25%;
 	}
 }
