@@ -18,8 +18,6 @@
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-		<!-- Plugin CSS -->
-		<link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" integrity="sha256-ji1bfJaTGnyscoc7LzcV9yNJy5vGKJ0frO3KJo1oaGQ=" crossorigin="anonymous" />
 
@@ -52,25 +50,16 @@
 
 		<header class="masthead text-center text-white d-flex">
 			<div class="container my-auto">
-				<div class="row" style="margin-top: 50px;">
-					<div class="col-lg-3 mx-auto"></div>
-					<div class="col-lg-6">
-						<h3>NM Sessions - Mix#5</h3>
-						<hr>
-					</div>
-					<div class="col-lg-3"></div>
-				</div>
 				<div class="row">
-					<div class="col-lg-12 mx-auto">
+					<div id="player-container" class="col-lg-12 mx-auto">
 						<audio id="player"></audio>
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="col-lg-12 mx-auto"></div>
+					<div class="col-lg-12 mx-auto"><hr/></div>
 					<div class="col-lg-8 mx-auto" style="margin-top: 15px;">
-						<p class="text-faded mb-5">Mix #5 - African meets Tropical</p>
-						<a class="btn btn-primary btn-xl js-scroll-trigger" href="media/NM_Sessions-Mix%235.opus" download>Download</a>
+						<p id="player-tagline" class="text-faded mb-5"></p>
 					</div>
 				</div>
 			</div>
@@ -140,7 +129,7 @@
 			<div class="container-fluid p-0">
 				<div class="row no-gutters popup-gallery">
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/mix-5.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #5" data-tagline="Mix #5 description" data-media="nm_sessions-mix-5">
 							<img class="img-fluid" src="img/portfolio/thumbnails/mix-5.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
@@ -151,7 +140,7 @@
 						</a>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/mix-6.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #6" data-tagline="Mix #6 description" data-media="nm_sessions-mix-6">
 							<img class="img-fluid" src="img/portfolio/thumbnails/mix-6.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
@@ -162,7 +151,7 @@
 						</a>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/mix-7.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #7" data-tagline="Mix #7 description" data-media="nm_sessions-mix-7">
 							<img class="img-fluid" src="img/portfolio/thumbnails/mix-7.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
@@ -173,7 +162,7 @@
 						</a>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/mix-8.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #8" data-tagline="Mix #8 description" data-media="nm_sessions-mix-8">
 							<img class="img-fluid" src="img/portfolio/thumbnails/mix-8.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
@@ -184,7 +173,7 @@
 						</a>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/mix-9.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #9" data-tagline="Mix #9 description" data-media="nm_sessions-mix-9">
 							<img class="img-fluid" src="img/portfolio/thumbnails/mix-9.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
@@ -195,11 +184,11 @@
 						</a>
 					</div>
 					<div class="col-lg-4 col-sm-6">
-						<a class="portfolio-box" href="img/portfolio/fullsize/6.jpg">
+						<a class="portfolio-box" data-title="NM Sessions - Mix #10" data-tagline="Mix #10 description" data-media="nm_sessions-mix-10">
 							<img class="img-fluid" src="img/portfolio/thumbnails/6.jpg" alt="">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
-									<div class="project-category text-faded">Mix 10</div>
+									<div class="project-category text-faded">Mix #10</div>
 									<div class="project-name">Mix title</div>
 								</div>
 							</div>
@@ -251,21 +240,6 @@
 		<!-- Plugin JavaScript -->
 		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 		<script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-		<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-		<!--
-		<script src="vendor/wavesurfer/wavesurfer.min.js"></script>
-		-->
-		<!--
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.7/howler.core.min.js" integrity="sha256-j7a5jhrnDjGALBNUqBg/3MaBPSXKSNuJ1UrI6z8j5G0=" crossorigin="anonymous"></script>
-		-->
-		<!--
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/clappr/0.2.80/clappr.min.js" integrity="sha256-dYpL9tDhsSEfW2z4RE4DGQwmhOAVjS3OHDrjnpKeh7Q=" crossorigin="anonymous"></script>
-		-->
-		<!--
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.8.9/hls.min.js" integrity="sha256-6yjTb9gWwtnKJlwC/qMPtXmysexBDtaVAXq+Va+SewM=" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="vendor/picobel/picobel.min.js"></script>
-		-->
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js" integrity="sha256-sD8dKWfj2n5RbQ/seNDEripkHCcw7MN6XxnV4Rs3JCk=" crossorigin="anonymous"></script>
 

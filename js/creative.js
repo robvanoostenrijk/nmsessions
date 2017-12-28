@@ -1,31 +1,4 @@
 
-function toTimeString(totalSeconds) {
-	var hours   = Math.floor(totalSeconds / 3600);
-	var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-	var seconds = totalSeconds - (hours * 3600) - (minutes * 60);
-
-	// round seconds
-	seconds = Math.round(seconds * 100) / 100
-
-	var result = (hours < 10 ? "0" + hours : hours);
-			result += ":" + (minutes < 10 ? "0" + minutes : minutes);
-			result += ":" + (seconds  < 10 ? "0" + seconds : seconds);
-	return result;
-}
-
-function step() {
-	// Determine our current seek position.
-	var seek = howl.seek() || 0;
-	$("#timer").html(toTimeString(Math.round(seek)));
-
-	$("#progress").css("width", (((seek / howl.duration()) * 100) || 0) + "%");
-
-	// If the sound is still playing, continue stepping.
-	if (howl.playing()) {
-		requestAnimationFrame(step);
-	}
-}
-
 (function($) {
 	"use strict"; // Start of use strict
 
@@ -84,87 +57,102 @@ function step() {
 		distance: '0px'
 	}, 300);
 
-	// Magnific popup calls
-	$('.popup-gallery').magnificPopup({
-		delegate: 'a',
-		type: 'image',
-		tLoading: 'Loading image #%curr%...',
-		mainClass: 'mfp-img-mobile',
-		gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0, 1]
-		},
-		image: {
-			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+	$("a.portfolio-box").click(function (e) {
+		var link = $(this);
+
+		var title = link.data("title");
+		var tagline = link.data("tagline");
+		var media = link.data("media");
+
+		if (window.player && window.player.media ) {
+			window.player.remove();
 		}
-	});
 
-	var player = new MediaElementPlayer("player", 
-	{
-		// Do not forget to put a final slash (/)
-		pluginPath: "https://cdnjs.com/libraries/mediaelement/",
-		// this will allow the CDN to use Flash without restrictions
-		// (by default, this is set as `sameDomain`)
-		shimScriptAccess: "always",
-		stretching: "responsive",
-		alwaysShowHours: true,
-		features: ["playpause", "progress", "remaining"],
+		$("#player-tagline").html(tagline);
 
-		type: ["application/x-mpegURL"],
-		success: function (mediaElement, domObject, player) {
-			var sources = [
-				{ src: "media/nm_sessions-mix-10/index.m3u8", type: "application/x-mpegURL" }
-			];
+		window.player = new MediaElementPlayer("player", 
+		{
+			// Do not forget to put a final slash (/)
+			pluginPath: "https://cdnjs.com/libraries/mediaelement/",
+			// this will allow the CDN to use Flash without restrictions
+			// (by default, this is set as `sameDomain`)
+			shimScriptAccess: "always",
+			stretching: "responsive",
+			alwaysShowHours: true,
+			features: ["playpause", "progress", "remaining"],
+	
+			type: ["application/x-mpegURL"],
+			success: function (mediaElement, domObject, player) {
+				var sources = [
+					{ src: "media/" + media + "/index.m3u8", type: "application/x-mpegURL" }
+				];
+	
+				mediaElement.setSrc(sources);
+				mediaElement.load();
+	
+				var timerail = player.getElement(player.controls).querySelector("." + player.options.classPrefix + "time-rail");
+	
+				if (timerail) {
+					var timecurrent = player.getElement(timerail).querySelector("." + player.options.classPrefix + "time-current");
+	
+					var titlebar1 = document.createElement("div"),
+						progress = document.createElement("div"),
+						titlebar2 = document.createElement("div");
+	
+					titlebar1.className = player.options.classPrefix + "titlebar " + player.options.classPrefix + "titlebar1";
+					progress.className = player.options.classPrefix + "titlebar " + player.options.classPrefix + "titlebar-progress";
+					titlebar2.className = player.options.classPrefix + "titlebar " + player.options.classPrefix + "titlebar2";
+	
+					titlebar1.innerText = titlebar2.innerText = title;
+	
+					timerail.prepend(titlebar1);
+					progress.appendChild(titlebar2);
+					timerail.appendChild(progress);
+	
+					mediaElement.addEventListener("timeupdate", function (e, a, b, c) {
+						var currentTime = player.getCurrentTime();
+	
+						if (!currentTime || isNaN(currentTime)) {
+							currentTime = 0;
+						}
+			
+						var duration = player.getDuration();
+			
+						if (isNaN(duration) || duration === Infinity || duration < 0) {
+							duration = 0;
+						}
+	
+						if (currentTime > 0 && duration > 0) {
+							var percent = (currentTime / duration) * 100;
+	
+							progress.style = "width: " + percent + "%;";
+							titlebar2.style = "width: " + (10000 / percent) + "%;";
+						}
+			
+					}, false);
+				} // if (timerail)
+			} // success: function()
+		}); // new MediaElementPlayer
 
-			mediaElement.setSrc(sources);
-			mediaElement.load();
+	}); // $(".portfolio-box").click
 
-			var timerail = player.getElement(player.controls).querySelector('.' + player.options.classPrefix + 'time-rail');
+	var urlParams = new URLSearchParams(window.location.search);
+	var track = urlParams.get("track");
 
-			if (timerail) {
-				var timecurrent = player.getElement(timerail).querySelector('.' + player.options.classPrefix + 'time-current');
+	var tracks = $("a.portfolio-box");
+	
+	if (track) {
+		tracks.each(function(index, element) {
+			var link = $(element);
+			var media = link.data("media");
 
-				var titlebar1 = document.createElement('div'),
-					progress = document.createElement('div'),
-					titlebar2 = document.createElement('div');
-
-				titlebar1.className = player.options.classPrefix + 'titlebar ' + player.options.classPrefix + 'titlebar1';
-				progress.className = player.options.classPrefix + 'titlebar ' + player.options.classPrefix + 'titlebar-progress';
-				titlebar2.className = player.options.classPrefix + 'titlebar ' + player.options.classPrefix + 'titlebar2';
-
-				titlebar1.innerText = "NM Sessions - Mix#5";
-				titlebar2.innerText = "NM Sessions - Mix#5";
-
-				timerail.prepend(titlebar1);
-				progress.appendChild(titlebar2);
-				timerail.appendChild(progress);
-
-				mediaElement.addEventListener('timeupdate', function (e, a, b, c) {
-					var currentTime = player.getCurrentTime();
-
-					if (!currentTime || isNaN(currentTime)) {
-						currentTime = 0;
-					}
-		
-					var duration = player.getDuration();
-		
-					if (isNaN(duration) || duration === Infinity || duration < 0) {
-						duration = 0;
-					}
-
-					if (currentTime > 0 && duration > 0) {
-						var percent = (currentTime / duration) * 100;
-
-						console.log(percent);
-
-						progress.style = 'width: ' + percent + '%;';
-						titlebar2.style = 'width: ' + (10000 / percent) + '%;';
-					}
-		
-				}, false);
+			if (media && media == urlParams.get("track")) {
+				link.click();
 			}
-		}
-	});
+		});
+	} else {
+		var last = tracks.filter(":last");
+		last.click();
+	}
 
 })(jQuery); // End of use strict
